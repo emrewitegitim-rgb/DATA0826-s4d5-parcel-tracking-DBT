@@ -16,6 +16,15 @@ sources:
                 - unique
                 - not_null
                 - dbt_utils.not_constant
+          config:
+            freshness:
+              warn_after:
+                count: 24
+                period: hour
+              error_after:
+                count: 2400000
+                period: hour
+            loaded_at_field: "PARSE_TIMESTAMP('%b %e, %Y', Date_purCHase)"
         - name: parcel_product
           identifier: raw_cc_parcel_product
           description: each product included in a parcel
