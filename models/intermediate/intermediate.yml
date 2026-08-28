@@ -1,0 +1,12 @@
+version: 2
+
+models:
+  - name: cc_parcel
+    description: aggregated parcel data
+    columns:
+      - name: parcel_id
+        description: unique id of the parcel
+        tests:
+          - not_null
+          - unique
+          
