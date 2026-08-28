@@ -15,6 +15,7 @@ sources:
               tests:
                 - unique
                 - not_null
+                - dbt_utils.not_constant
         - name: parcel_product
           identifier: raw_cc_parcel_product
           description: each product included in a parcel
