@@ -1,21 +1,44 @@
 
 version: 2
 
-models:
-    - name: my_first_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
+sources:
+    - name: raw
+      schema: raw_data0826_circle
+      description: "Source tables"
+      tables:
+        - name: parcel
+          identifier: raw_cc_parcel
+          description: parcel data
+          columns:
+            - name: parcel_id
+              description: unique id of the parcel
+              tests:
                 - unique
                 - not_null
-
-    - name: my_second_dbt_model
-      description: "A starter dbt model"
-      columns:
-          - name: id
-            description: "The primary key for this table"
-            tests:
-                - unique
+                - dbt_utils.not_constant
+          config:
+            freshness:
+              warn_after:
+                count: 24
+                period: hour
+              error_after:
+                count: 2400000
+                period: hour
+            loaded_at_field: "PARSE_TIMESTAMP('%b %e, %Y', Date_purCHase)"
+        - name: parcel_product
+          identifier: raw_cc_parcel_product
+          description: each product included in a parcel
+          columns:
+            - name: parcel_id
+              description: id of the parcel
+              tests:
                 - not_null
+            - name: model_mame
+              description: model included in a parcel
+              tests:
+                - not_null
+          tests:
+            - unique:
+                column_name: 'parcel_id || "-" || model_mame'
+            
+                        
